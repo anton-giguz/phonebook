@@ -1,0 +1,54 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Телефонная книга</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <script>
+    function setAll(name, checked) {
+        var checkboxes = document.getElementsByName(name);
+        for (var i = 0; i < checkboxes.length; i++) {
+            checkboxes[i].checked = checked;
+        }
+    }
+    </script>
+</head>
+
+<body>
+    <form th:action="@{/}" th:object="${entry}" method="post">
+        <table>
+            <tr><td>Фамилия:</td> <td><input type="text" th:field="*{lastName}"  /></td></tr>
+            <tr><td>Имя:</td>     <td><input type="text" th:field="*{firstName}" /></td></tr>
+            <tr><td>Телефон:</td> <td><input type="text" th:field="*{phone}"     /></td></tr>
+        </table>
+        <input type="hidden" name="do" value="add" />
+        <input type="submit" value="Добавить" />
+    </form>
+
+    <br />
+
+    <form th:action="@{/}" method="post">
+        <table border="1">
+            <tr>
+                <th><input type="checkbox" onclick="setAll('index', this.checked)" /></th>
+                <th>№</th>
+                <th>Фамилия</th>
+                <th>Имя</th>
+                <th>Телефон</th>
+                <th>Удалить</th>
+            </tr>
+            <tr th:each="entry : ${entries}" th:object="${entry}">
+                <td><input type="checkbox" name="index" th:value="${entryStat.index}" /></td>
+                <td th:text="${entryStat.count}" />
+                <td th:text="*{lastName}" />
+                <td th:text="*{firstName}" />
+                <td th:text="*{phone}" />
+                <td><a th:href="@{/(do=remove,index=${entryStat.index})}">Удалить</a></td>
+            </tr>
+        </table>
+        <input type="hidden" name="do" value="remove" />
+        <input type="submit" value="Удалить выбранные" />
+    </form>
+</body>
+
+</html>

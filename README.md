@@ -1,2 +1,7 @@
-# phonebook
-A simple phone book using Spring
+Starting (with Maven):
+```
+mvn spring-boot:run
+```
+
+Accessing:
+> http://localhost:8080/
