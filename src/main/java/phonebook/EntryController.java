@@ -23,6 +23,14 @@ public class EntryController {
         return "home";
     }
 
+    @PostMapping(path = "/", params = "do=find")
+    public String find(Model model, Entry entry) {
+        model.addAttribute("entry", entry);
+        model.addAttribute("search", true);
+        model.addAttribute("entries", repository.search(entry));
+        return "home";
+    }
+
     @PostMapping(path = "/", params = "do=add")
     public String add(Entry entry) {
         repository.save(entry);

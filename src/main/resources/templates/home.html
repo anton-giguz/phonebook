@@ -21,11 +21,13 @@
             <tr><td>Имя:</td>     <td><input type="text" th:field="*{firstName}" /></td></tr>
             <tr><td>Телефон:</td> <td><input type="text" th:field="*{phone}"     /></td></tr>
         </table>
-        <input type="hidden" name="do" value="add" />
-        <input type="submit" value="Добавить" />
+        <button type="submit" name="do" value="find">Найти</button>
+        <button type="submit" name="do" value="add">Добавить</button>
     </form>
 
     <br />
+
+    <span th:if="${search}">Результаты поиска (<a th:href="@{/}">сбросить</a>):</span>
 
     <form th:action="@{/}" method="post">
         <table border="1">
@@ -46,8 +48,7 @@
                 <td><a th:href="@{/(do=remove,index=*{index})}">Удалить</a></td>
             </tr>
         </table>
-        <input type="hidden" name="do" value="remove" />
-        <input type="submit" value="Удалить выбранные" />
+        <button type="submit" name="do" value="remove">Удалить выбранные</button>
     </form>
 </body>
 
