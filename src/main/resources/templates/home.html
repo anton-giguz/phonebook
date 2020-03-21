@@ -38,12 +38,12 @@
                 <th>Удалить</th>
             </tr>
             <tr th:each="entry : ${entries}" th:object="${entry}">
-                <td><input type="checkbox" name="index" th:value="${entryStat.index}" /></td>
+                <td><input type="checkbox" name="index" th:value="*{index}" /></td>
                 <td th:text="${entryStat.count}" />
                 <td th:text="*{lastName}" />
                 <td th:text="*{firstName}" />
                 <td th:text="*{phone}" />
-                <td><a th:href="@{/(do=remove,index=${entryStat.index})}">Удалить</a></td>
+                <td><a th:href="@{/(do=remove,index=*{index})}">Удалить</a></td>
             </tr>
         </table>
         <input type="hidden" name="do" value="remove" />

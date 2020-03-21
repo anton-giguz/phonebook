@@ -1,42 +1,46 @@
 package phonebook;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class EntryController {
 
-    private ArrayList<Entry> entries = new ArrayList<>();
+    private final EntryRepository repository;
+
+    EntryController(EntryRepository repository) {
+        this.repository = repository;
+    }
 
     @GetMapping("/")
     public String home(Model model) {
         model.addAttribute("entry", new Entry());
-        model.addAttribute("entries", entries);
+        model.addAttribute("entries", repository.findAllByOrderByIndexAsc());
         return "home";
     }
 
     @PostMapping(path = "/", params = "do=add")
     public String add(Entry entry) {
-        entries.add(entry);
+        repository.save(entry);
         return "redirect:/";
     }
 
     @PostMapping(path = "/", params = "do=remove")
-    public String remove(@RequestParam(name = "index", required = false) int[] indices) {
+    @Transactional
+    public String remove(@RequestParam(name = "index", required = false) List<Long> indices) {
         if (indices != null) {
-            for (int k = indices.length - 1; k >= 0; k--) {
-                entries.remove(indices[k]);
-            }
+            repository.deleteByIndexIn(indices);
         }
         return "redirect:/";
     }
 
     @GetMapping(path = "/", params = "do=remove")
-    public String remove(int index) {
-        entries.remove(index);
+    public String remove(Long index) {
+        repository.deleteById(index);
         return "redirect:/";
     }
 
